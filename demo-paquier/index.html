@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pâquier">
+<meta name="theme-color" content="#1B5874">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Agence du Pâquier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout : outil d'agence de gestion locative — tableau de bord « à traiter », circuit d'intervention locataire → agence → artisan → propriétaire, vues par rôle */
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --ink:#142028; --muted:#5B6873; --line:#D9E0E6;
+  --accent:#1B5874; --accent-ink:#FFFFFF; --accent-soft:#E2EDF3;
+  --sand:#9C6B2E; --sand-soft:#F5ECDF;
+  --red:#B8402F; --red-soft:#F8E2DE; --amber:#A66510; --amber-soft:#FAEEDB; --green:#2B7A50; --green-soft:#E0F1E7; --violet:#6B4E9B; --violet-soft:#EEE8F7;
+  --paper:#FFFFFF; --paper-ink:#18232C;
+  --f-disp:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1418; --surface:#152027; --ink:#E3EAEF; --muted:#94A3AE; --line:#26343D;
+  --accent:#7DBAD6; --accent-ink:#0D1418; --accent-soft:#17303C;
+  --sand:#DDAA6A; --sand-soft:#2C2317;
+  --red:#F08A79; --red-soft:#341A16; --amber:#E9B260; --amber-soft:#2F2413; --green:#79CF9F; --green-soft:#14291D; --violet:#B9A2E6; --violet-soft:#262036;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1418; --surface:#152027; --ink:#E3EAEF; --muted:#94A3AE; --line:#26343D;
+  --accent:#7DBAD6; --accent-ink:#0D1418; --accent-soft:#17303C;
+  --sand:#DDAA6A; --sand-soft:#2C2317;
+  --red:#F08A79; --red-soft:#341A16; --amber:#E9B260; --amber-soft:#2F2413; --green:#79CF9F; --green-soft:#14291D; --violet:#B9A2E6; --violet-soft:#262036;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.demo-strip{background:var(--sand-soft);color:var(--sand);font-size:12px;text-align:center;padding:6px 16px;font-weight:500}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mono{width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-disp);font-weight:600;font-size:17px;flex:none}
+.brand{font-family:var(--f-disp);font-weight:600;font-size:19px;line-height:1.05;flex:1;min-width:140px}
+.brand small{display:block;font-family:var(--f-body);font-size:12px;color:var(--muted);font-weight:500}
+.rolebox{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.rolebox select{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:var(--surface);font-weight:700;font-size:13px;color:var(--ink)}
+.back{border:0;background:none;color:var(--accent);font-weight:700;padding:6px 0}
+.shell{max-width:1120px;margin:0 auto;display:flex}
+main{flex:1;min-width:0;padding:16px 16px 100px;display:flex;flex-direction:column;gap:16px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 2px calc(6px + env(safe-area-inset-bottom,0px))}
+nav.tabs button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);padding:6px 0;font-weight:600;position:relative}
+nav.tabs svg{width:22px;height:22px}
+nav.tabs button[aria-current="true"]{color:var(--accent)}
+nav.tabs .n{position:absolute;top:2px;left:calc(50% + 6px);background:var(--red);color:#fff;border-radius:999px;font-size:10px;padding:0 5px;line-height:16px}
+@media (min-width:920px){
+  nav.tabs{position:sticky;top:72px;align-self:flex-start;display:flex;flex-direction:column;width:210px;border:0;background:none;padding:16px 8px;gap:4px}
+  nav.tabs button{flex-direction:row;gap:10px;font-size:14px;padding:10px 12px;border-radius:10px}
+  nav.tabs button[aria-current="true"]{background:var(--accent-soft)}
+  nav.tabs .n{position:static;margin-left:auto}
+  main{padding-bottom:40px}
+}
+h1{font-family:var(--f-disp);font-weight:600;font-size:27px;line-height:1.15;margin:0;text-wrap:balance}
+h2{font-size:12px;font-weight:700;color:var(--muted);margin:6px 0 0;text-transform:uppercase;letter-spacing:.08em}
+.sub{color:var(--muted);margin:3px 0 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{padding:12px 14px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);text-align:left}
+.kpi b{display:block;font-family:var(--f-disp);font-size:30px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted)}
+.kpi.alert b{color:var(--red)}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;border:0;border-bottom:1px solid var(--line);background:none;width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+button.row:hover{background:var(--accent-soft)}
+.row .m{flex:1;min-width:0}.row .t{font-weight:700}.row .d{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{color:var(--muted);flex:none}
+.ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none}
+.ico svg{width:20px;height:20px}
+.i-red{background:var(--red-soft);color:var(--red)}.i-amber{background:var(--amber-soft);color:var(--amber)}.i-blue{background:var(--accent-soft);color:var(--accent)}.i-violet{background:var(--violet-soft);color:var(--violet)}.i-green{background:var(--green-soft);color:var(--green)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.p-new{background:var(--red-soft);color:var(--red)}.p-assign{background:var(--accent-soft);color:var(--accent)}.p-devis{background:var(--violet-soft);color:var(--violet)}.p-plan{background:var(--amber-soft);color:var(--amber)}.p-done{background:var(--green-soft);color:var(--green)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chips button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-weight:600;font-size:14px}
+.chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.flow div{font-size:11px;text-align:center;padding:8px 2px;border-radius:8px;background:var(--bg);color:var(--muted);font-weight:600;line-height:1.2}
+.flow div.on{background:var(--accent);color:var(--accent-ink)}
+.flow div.past{background:var(--accent-soft);color:var(--accent)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;padding:14px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:600;min-width:0}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;padding:12px 14px}
+.photos figure{margin:0}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block}
+.photos figcaption{font-size:12px;color:var(--muted);margin-top:3px}
+.addphoto{aspect-ratio:4/3;border:1.5px dashed var(--line);border-radius:8px;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center;cursor:pointer;padding:6px}
+.panel{padding:14px;display:flex;flex-direction:column;gap:10px}
+.panel label{display:flex;flex-direction:column;gap:4px;font-weight:600;font-size:14px}
+.panel select,.panel input[type=text],.panel input[type=number],.panel input[type=date],.panel textarea{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);font-weight:400;width:100%}
+.panel textarea{min-height:80px}
+.hint{font-size:13px;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px}
+.hint.warn{background:var(--violet-soft);color:var(--violet)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 14px;font-weight:700}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.green{background:var(--green);border-color:var(--green);color:#fff}
+.btn.red{background:var(--surface);border-color:var(--red);color:var(--red)}
+.btn.full{width:100%}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.btnrow .btn{flex:1}
+.log{padding:6px 14px 12px;margin:0;list-style:none}
+.log li{position:relative;padding:8px 0 8px 20px;border-left:2px solid var(--line);margin-left:6px;font-size:14px}
+.log li::before{content:"";position:absolute;left:-6px;top:13px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.log li small{display:block;color:var(--muted);font-size:12px}
+.ptabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.ptabs button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-weight:600}
+.ptabs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.el{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.el:last-child{border-bottom:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;font-size:13px}
+.seg button[aria-pressed="true"][data-v="Neuf"],.seg button[aria-pressed="true"][data-v="Bon état"]{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+.seg button[aria-pressed="true"][data-v="Usagé"]{background:var(--amber-soft);color:var(--amber);border-color:var(--amber)}
+.seg button[aria-pressed="true"][data-v="Dégradé"]{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+.el input[type=text]{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--bg);width:100%}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
+@media (max-width:520px){.sig{grid-template-columns:1fr}}
+.sig label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
+.sig canvas{width:100%;height:130px;border:1px solid var(--line);border-radius:8px;background:var(--paper);touch-action:none;display:block}
+.sig .clear{font-size:12px;border:0;background:none;color:var(--accent);padding:4px 0}
+.more{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (max-width:420px){.more{grid-template-columns:1fr}}
+.more button{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:16px;text-align:left;display:flex;flex-direction:column;gap:8px}
+.more b{font-size:16px}
+.more span{color:var(--muted);font-size:13px}
+.overlay{position:fixed;inset:0;z-index:20;background:rgba(8,14,18,.55);display:flex;justify-content:center;overflow-y:auto;padding:24px 16px}
+.sheetwrap{width:100%;max-width:720px;display:flex;flex-direction:column;gap:10px}
+.sheetbar{display:flex;justify-content:space-between;align-items:center;color:#fff;gap:8px}
+.sheetbar button{background:#fff;color:#142028;border:0;border-radius:8px;padding:8px 12px;font-weight:700}
+.paper{background:var(--paper);color:var(--paper-ink);border-radius:4px;padding:30px 26px;font-size:13px;line-height:1.5}
+.paper h3{font-family:var(--f-disp);font-size:24px;margin:0 0 4px}
+.paper .hd{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid #1B5874;padding-bottom:12px;margin-bottom:14px}
+.paper .tag{color:#1B5874;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+.paper table{width:100%;border-collapse:collapse;margin:6px 0 14px}
+.paper th,.paper td{border:1px solid #D5DCE2;padding:6px 8px;text-align:left;vertical-align:top}
+.paper th{background:#EEF3F6;font-size:12px}
+.paper .ph{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 14px}
+.paper .ph img{width:120px;aspect-ratio:4/3;object-fit:cover;border:1px solid #D5DCE2}
+.paper .sigs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.paper .sigs div{border:1px solid #D5DCE2;padding:8px;min-height:110px}
+.paper .sigs img{max-height:80px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:700;z-index:30;font-size:14px;max-width:calc(100% - 32px);text-align:center}
+.empty{padding:18px;text-align:center;color:var(--muted)}
+.tiny{font-size:12px;color:var(--muted)}
+.hello{display:flex;align-items:center;gap:12px;padding:16px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--sand-soft);color:var(--sand);display:grid;place-items:center;font-weight:700;flex:none;font-family:var(--f-disp);font-size:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body style="margin:0">
+
+<div class="demo-strip">Démonstration — toutes les données sont fictives</div>
+<header class="top" id="top"></header>
+<div class="shell"><nav class="tabs" id="nav" aria-label="Navigation principale"></nav><main id="main"></main></div>
+<div id="layer"></div>
+
+<script>
+const SV=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const IC={
+  home:SV('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>'),
+  wrench:SV('<path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L3 18l3 3 6.2-6.2a4 4 0 0 0 5.3-5.3l-2.5 2.5-2.5-.5-.5-2.5z"/>'),
+  clip:SV('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.8h6V4M8.5 11l2 2 4-4M8.5 17h7"/>'),
+  bldg:SV('<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M8 15h2M14 15h2M10 21v-3h4v3"/>'),
+  dots:SV('<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>'),
+  bell:SV('<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'),
+  key:SV('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>'),
+  euro:SV('<path d="M17 6.5A7 7 0 1 0 17 17.5"/><path d="M4 10h9M4 14h9"/>'),
+  user:SV('<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'),
+  hammer:SV('<path d="M14 4l6 6-3 3-6-6z"/><path d="M11 7L3 15l3 3 8-8"/>'),
+  chev:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
+};
+function photo(label,hue){
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="hsl(${hue},22%,84%)"/><rect y="190" width="400" height="110" fill="hsl(${hue+15},22%,60%)"/><rect x="220" y="40" width="120" height="130" fill="hsl(${hue},35%,94%)" stroke="hsl(${hue},16%,60%)" stroke-width="6"/><rect x="40" y="110" width="130" height="80" rx="6" fill="hsl(${hue+25},18%,68%)"/><rect y="262" width="400" height="38" fill="rgba(0,0,0,.45)"/><text x="16" y="287" font-family="Arial,sans-serif" font-size="18" fill="#fff">${label}</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+// ---------- Données fictives ----------
+const TODAY='2026-10-12';
+const SEUIL=300;
+const PROP=[
+  {id:'p1',nom:'Mme Catherine Duval',tel:'06 21 44 87 10'},
+  {id:'p2',nom:'SCI du Semnoz',tel:'04 50 12 33 90',contact:'M. Frédéric Rey'},
+  {id:'p3',nom:'M. Olivier Brunet',tel:'06 72 18 55 41'},
+  {id:'p4',nom:'Indivision Lacroix',tel:'06 30 97 62 28',contact:'Mme Anne Lacroix'}
+];
+const BIEN=[
+  {id:'b1',nom:'T2 rue Royale',adr:'18 rue Royale, 3e étage, 74000 Annecy',prop:'p1',loc:'l1',type:'T2',surf:44,pieces:['Entrée','Séjour','Cuisine','Chambre','Salle de bain']},
+  {id:'b2',nom:'Studio Sommeiller',adr:'7 rue Sommeiller, 2e étage, 74000 Annecy',prop:'p1',loc:'l2',type:'Studio',surf:23,pieces:['Pièce principale','Coin cuisine','Salle d’eau']},
+  {id:'b3',nom:'T3 avenue de Genève',adr:'52 avenue de Genève, 1er étage, 74000 Annecy',prop:'p2',loc:'l3',type:'T3',surf:66,pieces:['Entrée','Séjour','Cuisine','Chambre 1','Chambre 2','Salle de bain','WC']},
+  {id:'b4',nom:'T4 Albigny',adr:'9 chemin d’Albigny, 74940 Annecy-le-Vieux',prop:'p2',loc:'l4',type:'T4',surf:88,pieces:['Entrée','Séjour','Cuisine','Chambre 1','Chambre 2','Chambre 3','Salle de bain','WC']},
+  {id:'b5',nom:'T2 Les Fins',adr:'23 avenue de France, 74000 Annecy',prop:'p2',loc:'l5',type:'T2',surf:47,pieces:['Entrée','Séjour','Cuisine','Chambre','Salle de bain']},
+  {id:'b6',nom:'T3 Cran-Gevrier',adr:'41 route de Frangy, 74960 Cran-Gevrier',prop:'p3',loc:'l6',type:'T3',surf:63,pieces:['Entrée','Séjour','Cuisine','Chambre 1','Chambre 2','Salle de bain']},
+  {id:'b7',nom:'Studio quai de la Tournette',adr:'3 quai de la Tournette, 4e étage, 74000 Annecy',prop:'p4',loc:'l7',type:'Studio meublé',surf:21,pieces:['Pièce principale','Coin cuisine','Salle d’eau']},
+  {id:'b8',nom:'T2 Novel',adr:'14 avenue de Novel, 74000 Annecy',prop:'p4',loc:'l8',type:'T2',surf:45,pieces:['Entrée','Séjour','Cuisine','Chambre','Salle de bain']}
+];
+const LOC=[
+  {id:'l1',nom:'Mathis Girard',tel:'06 11 52 74 08'},{id:'l2',nom:'Emma Petit',tel:'06 48 20 13 77'},{id:'l3',nom:'Julie Martin',tel:'07 61 39 84 22'},
+  {id:'l4',nom:'Famille Laurent',tel:'06 93 15 40 66'},{id:'l5',nom:'Hugo Bernard',tel:'06 27 88 01 39'},{id:'l6',nom:'Sarah et Karim Benali',tel:'06 54 70 26 13'},
+  {id:'l7',nom:'Lucas Fontaine (arrive le 15/10)',tel:'07 82 46 19 30'},{id:'l8',nom:'Chloé Roux',tel:'06 35 61 92 48'}
+];
+const ART=[
+  {id:'a1',nom:'Plomberie Lac Services',contact:'Romain',metier:'Plomberie',tel:'06 40 18 22 75',delai:'48 h'},
+  {id:'a2',nom:'Élec 74',contact:'Hervé',metier:'Électricité',tel:'06 66 31 09 52',delai:'3 jours'},
+  {id:'a3',nom:'Chauffage Semnoz',contact:'Nicolas',metier:'Chauffage',tel:'06 87 54 23 10',delai:'24 h'},
+  {id:'a4',nom:'Menuiserie Fillon',contact:'Bastien',metier:'Menuiserie, volets',tel:'06 12 90 47 38',delai:'1 semaine'},
+  {id:'a5',nom:'Serrurerie du Vieil Annecy',contact:'Damien',metier:'Serrurerie',tel:'06 58 27 13 64',delai:'24 h'},
+  {id:'a6',nom:'Thomas Multi-services',contact:'Thomas',metier:'Petits travaux, peinture',tel:'07 69 41 85 02',delai:'3 jours'}
+];
+const STEPS=['Nouvelle','Artisan assigné','Devis à valider','Planifiée','Terminée'];
+const PCL={'Nouvelle':'p-new','Artisan assigné':'p-assign','Devis à valider':'p-devis','Planifiée':'p-plan','Terminée':'p-done'};
+let INT=[
+  {id:'i1',bien:'b3',titre:'Fuite au chauffe-eau',cat:'Plomberie',par:'Julie Martin (locataire)',quand:'12/10 · 07:52',statut:'Nouvelle',urgent:true,art:null,devis:null,rdv:null,desc:'De l’eau coule sous le chauffe-eau dans le placard de la salle de bain depuis ce matin.',photos:[photo('Chauffe-eau — placard SdB',200)],apres:[],log:[{t:'Demande envoyée par la locataire depuis son téléphone',h:'12/10 · 07:52'}]},
+  {id:'i2',bien:'b1',titre:'Volet roulant bloqué dans la chambre',cat:'Menuiserie',par:'Mathis Girard (locataire)',quand:'08/10 · 19:20',statut:'Artisan assigné',urgent:false,art:'a4',devis:null,rdv:null,desc:'Le volet reste bloqué à mi-hauteur, la sangle semble cassée.',photos:[photo('Volet chambre',35)],apres:[],log:[{t:'Demande envoyée par le locataire',h:'08/10 · 19:20'},{t:'Confiée à Menuiserie Fillon',h:'09/10 · 09:05'}]},
+  {id:'i3',bien:'b4',titre:'Chaudière en panne',cat:'Chauffage',par:'Famille Laurent (locataire)',quand:'09/10 · 08:10',statut:'Devis à valider',urgent:true,art:'a3',devis:1280,rdv:null,desc:'Plus de chauffage ni d’eau chaude. Code erreur F28 affiché.',photos:[photo('Chaudière — code F28',15)],apres:[],log:[{t:'Demande envoyée par la locataire',h:'09/10 · 08:10'},{t:'Confiée à Chauffage Semnoz',h:'09/10 · 08:40'},{t:'Diagnostic : carte électronique à remplacer. Devis de 1 280 €',h:'09/10 · 17:15'},{t:'Devis envoyé à SCI du Semnoz pour accord',h:'10/10 · 09:00'}]},
+  {id:'i4',bien:'b6',titre:'Serrure de la porte d’entrée qui force',cat:'Serrurerie',par:'Karim Benali (locataire)',quand:'07/10 · 12:30',statut:'Planifiée',urgent:false,art:'a5',devis:180,rdv:'2026-10-13',desc:'La clé tourne difficilement, peur de rester bloqués dehors.',photos:[],apres:[],log:[{t:'Demande envoyée par le locataire',h:'07/10 · 12:30'},{t:'Confiée à Serrurerie du Vieil Annecy',h:'07/10 · 14:00'},{t:'Devis de 180 € sous le seuil du mandat : validé par l’agence',h:'08/10 · 10:20'},{t:'Rendez-vous fixé le 13/10 à 9 h',h:'08/10 · 10:22'}]},
+  {id:'i5',bien:'b2',titre:'Moisissures au plafond de la salle d’eau',cat:'Petits travaux',par:'Emma Petit (locataire)',quand:'29/09 · 18:05',statut:'Terminée',urgent:false,art:'a6',devis:240,rdv:'2026-10-08',desc:'Taches noires au plafond au-dessus de la douche.',photos:[photo('Avant — plafond',180)],apres:[photo('Après — plafond repeint',150)],log:[{t:'Demande envoyée par la locataire',h:'29/09 · 18:05'},{t:'Confiée à Thomas Multi-services',h:'30/09 · 09:10'},{t:'Traitement anti-humidité et peinture faits',h:'08/10 · 16:30'},{t:'Compte rendu avec photos envoyé à Mme Catherine Duval',h:'08/10 · 17:00'}]},
+  {id:'i6',bien:'b8',titre:'Prise électrique de la cuisine qui chauffe',cat:'Électricité',par:'Chloé Roux (locataire)',quand:'01/10 · 08:45',statut:'Terminée',urgent:false,art:'a2',devis:95,rdv:'2026-10-03',desc:'La prise derrière le micro-ondes est chaude et noircie.',photos:[photo('Avant — prise cuisine',20)],apres:[photo('Après — prise remplacée',140)],log:[{t:'Demande envoyée par la locataire',h:'01/10 · 08:45'},{t:'Confiée à Élec 74',h:'01/10 · 09:15'},{t:'Prise remplacée',h:'03/10 · 11:00'},{t:'Compte rendu envoyé à Indivision Lacroix',h:'03/10 · 11:30'}]}
+];
+let EDL=[
+  {id:'e1',bien:'b7',type:'Entrée',date:'2026-10-15',h:'10:00',qui:'Céline',statut:'À faire'},
+  {id:'e2',bien:'b5',type:'Sortie',date:'2026-10-23',h:'14:00',qui:'Céline',statut:'À faire'},
+  {id:'e3',bien:'b5',type:'Entrée',date:'2026-11-02',h:'10:00',qui:'Céline',statut:'À faire'},
+  {id:'e4',bien:'b1',type:'Entrée',date:'2025-09-01',h:'10:00',qui:'Céline',statut:'Finalisé'}
+];
+let RAP=[
+  {id:'r1',bien:'b2',quoi:'Attestation d’assurance habitation',echeance:'2026-09-30',qui:'locataire',fait:false},
+  {id:'r2',bien:'b6',quoi:'Attestation d’assurance habitation',echeance:'2026-10-31',qui:'locataire',fait:false},
+  {id:'r3',bien:'b8',quoi:'Entretien annuel de la chaudière',echeance:'2026-10-25',qui:'locataire',fait:false},
+  {id:'r4',bien:'b1',quoi:'Révision du loyer (IRL)',echeance:'2026-11-01',qui:'agence',fait:false},
+  {id:'r5',bien:'b4',quoi:'Ramonage du conduit',echeance:'2026-11-15',qui:'locataire',fait:false},
+  {id:'r6',bien:'b3',quoi:'Diagnostic électrique à renouveler',echeance:'2027-01-20',qui:'propriétaire',fait:false}
+];
+let CLE=[
+  {id:'k1',bien:'b5',chez:'Thomas Multi-services',depuis:'09/10',motif:'Peinture avant relocation'},
+  {id:'k2',bien:'b3',chez:'Plomberie Lac Services',depuis:'12/10',motif:'Fuite chauffe-eau'},
+  {id:'k3',bien:'b7',chez:'Agence (coffre)',depuis:'01/10',motif:'Entrée du 15/10'}
+];
+const ETATS=['Neuf','Bon état','Usagé','Dégradé'];
+const ELEMENTS={'Entrée':['Porte d’entrée','Sol','Murs','Éclairage'],'Séjour':['Sol','Murs','Plafond','Fenêtres','Radiateur'],'Pièce principale':['Sol','Murs','Fenêtre','Radiateur'],'Cuisine':['Plan de travail','Évier','Plaques','Placards','Sol'],'Coin cuisine':['Plan de travail','Évier','Plaques'],'Chambre':['Sol','Murs','Fenêtre','Placard'],'Chambre 1':['Sol','Murs','Fenêtre','Placard'],'Chambre 2':['Sol','Murs','Fenêtre'],'Chambre 3':['Sol','Murs','Fenêtre'],'Salle de bain':['Baignoire ou douche','Lavabo','Robinetterie','Ventilation'],'Salle d’eau':['Douche','Lavabo','WC','Ventilation'],'WC':['Cuvette','Chasse d’eau','Sol']};
+
+// ---------- Outils ----------
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const Bn=id=>BIEN.find(b=>b.id===id),Pr=id=>PROP.find(p=>p.id===id),Lc=id=>LOC.find(l=>l.id===id),Ar=id=>ART.find(a=>a.id===id);
+const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+const fmtL=d=>new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+const days=d=>Math.round((new Date(d+'T12:00:00')-new Date(TODAY+'T12:00:00'))/864e5);
+const euro=n=>n.toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+const now=()=>'12/10 · '+['09:14','09:31','10:02','10:26','11:05'][Math.floor(Math.random()*5)];
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}
+let seq=50;const uid=p=>p+(++seq);
+
+// ---------- Rôles ----------
+const ROLES={agence:'Agence',artisan:'Artisan',proprio:'Propriétaire',locataire:'Locataire'};
+const AS={artisan:'a3',proprio:'p2',locataire:'l3'};
+let state={role:'agence',view:'home',p:null,fil:'ouvertes',room:0};
+const stack=[];
+function go(v,p){stack.push({...state});state={...state,view:v,p};render();window.scrollTo(0,0)}
+function back(){const s=stack.pop();state=s?{...s,role:state.role}:{...state,view:'home'};render();window.scrollTo(0,0)}
+const ROOTS={agence:['home','inters','edls','biens','plus'],artisan:['home'],proprio:['home'],locataire:['home']};
+
+function renderTop(){
+  const root=ROOTS[state.role].includes(state.view);
+  $('#top').innerHTML=`${root?'<div class="mono">P</div>':'<button class="back" data-a="back">‹ Retour</button>'}
+  <div class="brand">Agence du Pâquier<small>Gestion locative · Annecy</small></div>
+  <label class="rolebox" for="role">Voir comme<select id="role">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${state.role===k?'selected':''}>${v}</option>`).join('')}</select></label>`;
+}
+function renderNav(){
+  const n=$('#nav');
+  if(state.role!=='agence'){n.hidden=true;return}
+  n.hidden=false;
+  const open=INT.filter(i=>i.statut==='Nouvelle').length;
+  const it=[['home','Accueil',IC.home],['inters','Interventions',IC.wrench,open],['edls','États des lieux',IC.clip],['biens','Biens',IC.bldg],['plus','Plus',IC.dots]];
+  const map={inter:'inters',edl:'edls',newInter:'inters',bien:'biens',proprio:'biens',artisans:'plus',rappels:'plus',cles:'plus'};
+  const cur=ROOTS.agence.includes(state.view)?state.view:(map[state.view]||'home');
+  n.innerHTML=it.map(([v,l,i,c])=>`<button data-a="nav" data-v="${v}" aria-current="${cur===v}">${i}<span>${l}</span>${c?`<span class="n">${c}</span>`:''}</button>`).join('');
+}
+function iRow(i,showBien=true){
+  const b=Bn(i.bien);
+  return `<button class="row" data-a="inter" data-id="${i.id}"><span class="ico ${i.statut==='Nouvelle'?'i-red':i.statut==='Devis à valider'?'i-violet':i.statut==='Terminée'?'i-green':'i-blue'}">${IC.wrench}</span><div class="m"><div class="t">${i.urgent&&i.statut!=='Terminée'?'Urgent · ':''}${esc(i.titre)}</div><div class="d">${showBien?esc(b.nom)+' · ':''}${i.art?esc(Ar(i.art).nom):'Pas encore d’artisan'}</div></div><span class="pill ${PCL[i.statut]}">${i.statut}</span></button>`;
+}
+const V={};
+
+// ===== Agence =====
+V.home_agence=()=>{
+  const nouv=INT.filter(i=>i.statut==='Nouvelle'),devis=INT.filter(i=>i.statut==='Devis à valider');
+  const edlS=EDL.filter(e=>e.statut==='À faire'&&days(e.date)>=0&&days(e.date)<=7);
+  const rap=RAP.filter(r=>!r.fait&&days(r.echeance)<=30);
+  const todo=[
+    ...nouv.map(i=>({a:'inter',id:i.id,cl:'i-red',ic:IC.wrench,t:'Nouvelle demande : '+i.titre,d:Bn(i.bien).nom+' · '+i.par.split(' (')[0]+' · '+i.quand})),
+    ...devis.map(i=>({a:'inter',id:i.id,cl:'i-violet',ic:IC.euro,t:'Devis en attente du propriétaire : '+euro(i.devis),d:Bn(i.bien).nom+' · '+Pr(Bn(i.bien).prop).nom})),
+    ...edlS.map(e=>({a:'edl',id:e.id,cl:'i-blue',ic:IC.clip,t:'État des lieux d’'+(e.type==='Entrée'?'entrée':'sortie')+' '+fmt(e.date)+' à '+e.h,d:Bn(e.bien).nom+' · '+e.qui})),
+    ...rap.map(r=>({a:'rappels',id:r.id,cl:'i-amber',ic:IC.bell,t:r.quoi+(days(r.echeance)<0?' : échue':' : '+fmt(r.echeance)),d:Bn(r.bien).nom}))
+  ];
+  return `<div><h1>Bonjour Céline</h1><p class="sub">Lundi 12 octobre · ${todo.length} choses à traiter</p></div>
+  <div class="kpis">
+    <button class="kpi" data-a="nav" data-v="biens"><b>${BIEN.length}</b><span>biens gérés</span></button>
+    <button class="kpi ${nouv.length?'alert':''}" data-a="nav" data-v="inters"><b>${INT.filter(i=>i.statut!=='Terminée').length}</b><span>interventions ouvertes</span></button>
+    <button class="kpi" data-a="nav" data-v="inters"><b>${devis.length}</b><span>devis chez un propriétaire</span></button>
+    <button class="kpi" data-a="nav" data-v="edls"><b>${edlS.length}</b><span>états des lieux cette semaine</span></button>
+  </div>
+  <h2>À traiter</h2>
+  <div class="card">${todo.map(x=>`<button class="row" data-a="${x.a}" data-id="${x.id}"><span class="ico ${x.cl}">${x.ic}</span><div class="m"><div class="t">${esc(x.t)}</div><div class="d">${esc(x.d)}</div></div><span class="chev">${IC.chev}</span></button>`).join('')}</div>
+  <h2>Clés sorties</h2>
+  <div class="card">${CLE.map(k=>`<button class="row" data-a="cles"><span class="ico i-amber">${IC.key}</span><div class="m"><div class="t">${esc(Bn(k.bien).nom)}</div><div class="d">Chez ${esc(k.chez)} depuis le ${k.depuis} · ${esc(k.motif)}</div></div></button>`).join('')}</div>
+  <p class="tiny">Changez « Voir comme » en haut : l’artisan, le propriétaire et le locataire ont chacun leur propre écran.</p>`;
+};
+V.inters=()=>{
+  const F={ouvertes:i=>i.statut!=='Terminée',nouvelles:i=>i.statut==='Nouvelle',devis:i=>i.statut==='Devis à valider',terminees:i=>i.statut==='Terminée'};
+  const list=INT.filter(F[state.fil]);
+  return `<div><h1>Interventions</h1><p class="sub">Du signalement du locataire au compte rendu au propriétaire</p></div>
+  <button class="btn primary" data-a="newInter">+ Nouvelle intervention</button>
+  <div class="chips">${[['ouvertes','En cours'],['nouvelles','Nouvelles'],['devis','Devis à valider'],['terminees','Terminées']].map(([k,l])=>`<button data-a="fil" data-v="${k}" aria-pressed="${state.fil===k}">${l}</button>`).join('')}</div>
+  <div class="card">${list.map(i=>iRow(i)).join('')||'<div class="empty">Rien ici</div>'}</div>`;
+};
+V.inter=()=>{
+  const i=INT.find(x=>x.id===state.p),b=Bn(i.bien),p=Pr(b.prop),l=Lc(b.loc),s=STEPS.indexOf(i.statut);
+  const role=state.role;
+  let act='';
+  if(role==='agence'){
+    if(i.statut==='Nouvelle')act=`<div class="card panel"><label>Confier à un artisan<select id="art">${ART.map(a=>`<option value="${a.id}" ${a.metier.startsWith(i.cat)?'selected':''}>${esc(a.nom)} — ${esc(a.metier)}</option>`).join('')}</select></label><button class="btn primary" data-a="assign">Envoyer la demande à l’artisan</button><p class="tiny">L’artisan reçoit l’adresse, les photos, le téléphone du locataire et l’emplacement des clés.</p></div>`;
+    else if(i.statut==='Artisan assigné')act=`<div class="card panel"><label>Montant du devis de l’artisan (€)<input type="number" id="dv" value="420"></label><div class="hint">Au-delà de ${SEUIL} €, le mandat de gestion demande l’accord du propriétaire. L’application le lui envoie automatiquement.</div><button class="btn primary" data-a="devis">Enregistrer le devis</button></div>`;
+    else if(i.statut==='Devis à valider')act=`<div class="card panel"><div class="hint warn">Devis de ${euro(i.devis)} envoyé à ${esc(p.nom)} le 10/10. En attente de son accord.</div><div class="btnrow"><button class="btn" data-a="relance">Relancer le propriétaire</button><button class="btn" data-a="asProprio">Voir son écran</button></div></div>`;
+    else if(i.statut==='Planifiée')act=`<div class="card panel"><div class="hint">Rendez-vous ${i.rdv?fmtL(i.rdv):'à fixer'} avec ${esc(Ar(i.art).nom)}. Le locataire a été prévenu.</div><button class="btn green" data-a="finish">Marquer terminée et envoyer le compte rendu</button></div>`;
+    else act=`<div class="card panel"><div class="hint">Intervention terminée. Le compte rendu avec les photos a été envoyé à ${esc(p.nom)}.</div><button class="btn" data-a="report">Voir le compte rendu</button></div>`;
+  } else if(role==='artisan'){
+    if(i.statut==='Artisan assigné')act=`<div class="card panel"><label>Mon devis (€)<input type="number" id="dv" value="420"></label><button class="btn primary" data-a="devis">Envoyer mon devis à l’agence</button></div>`;
+    else if(i.statut==='Planifiée')act=`<div class="card panel"><button class="btn green" data-a="finish">Travail terminé</button><p class="tiny">Ajoutez une photo « après » avant de terminer.</p></div>`;
+    else if(i.statut==='Devis à valider')act=`<div class="card panel"><div class="hint warn">Votre devis de ${euro(i.devis)} attend l’accord du propriétaire. Vous serez prévenu ici.</div></div>`;
+  } else if(role==='proprio'){
+    if(i.statut==='Devis à valider')act=`<div class="card panel"><div class="hint warn">L’agence vous demande votre accord pour un devis de <b>${euro(i.devis)}</b> (${esc(Ar(i.art).nom)}).</div><div class="btnrow"><button class="btn green" data-a="accept">J’accepte le devis</button><button class="btn red" data-a="refuse">Je refuse</button></div></div>`;
+    else if(i.statut==='Terminée')act=`<button class="btn" data-a="report">Voir le compte rendu</button>`;
+  }
+  return `<div>${i.urgent&&i.statut!=='Terminée'?'<span class="pill p-new">Urgent</span> ':''}<span class="pill ${PCL[i.statut]}">${i.statut}</span><h1 style="margin-top:8px">${esc(i.titre)}</h1><p class="sub">${esc(b.nom)} · signalé par ${esc(i.par)} le ${esc(i.quand)}</p></div>
+  <div class="flow">${STEPS.map((t,k)=>`<div class="${k===s?'on':k<s?'past':''}">${t}</div>`).join('')}</div>
+  ${act}
+  <div class="card"><dl class="kv">
+    <dt>Adresse</dt><dd>${esc(b.adr)}</dd>
+    ${role!=='proprio'?`<dt>Locataire</dt><dd>${esc(l.nom)} · ${esc(l.tel)}</dd>`:''}
+    ${role!=='artisan'?`<dt>Propriétaire</dt><dd>${esc(p.nom)}</dd>`:''}
+    <dt>Artisan</dt><dd>${i.art?esc(Ar(i.art).nom)+' · '+esc(Ar(i.art).tel):'—'}</dd>
+    ${i.devis!=null&&role!=='locataire'?`<dt>Devis</dt><dd>${euro(i.devis)}</dd>`:''}
+    ${i.rdv?`<dt>Rendez-vous</dt><dd>${fmtL(i.rdv)}</dd>`:''}
+    ${role==='artisan'?`<dt>Clés</dt><dd>${(CLE.find(k=>k.bien===i.bien)||{chez:'Locataire présent'}).chez}</dd>`:''}
+  </dl></div>
+  <h2>Ce que dit le locataire</h2>
+  <div class="card" style="padding:12px 14px">${esc(i.desc)}</div>
+  <h2>Photos</h2>
+  <div class="card photos">${i.photos.map((ph,k)=>`<figure><img src="${ph}" alt=""><figcaption>Avant ${k+1}</figcaption></figure>`).join('')}${i.apres.map((ph,k)=>`<figure><img src="${ph}" alt=""><figcaption>Après ${k+1}</figcaption></figure>`).join('')}${role!=='proprio'&&i.statut!=='Terminée'?`<label class="addphoto">＋ Ajouter une photo<input type="file" accept="image/*" data-a="addPhoto" hidden></label>`:''}</div>
+  ${role!=='locataire'?`<h2>Historique</h2><ul class="card log">${i.log.map(e=>`<li>${esc(e.t)}<small>${esc(e.h)}</small></li>`).join('')}</ul>`:''}`;
+};
+V.newInter=()=>`<div><h1>Nouvelle intervention</h1><p class="sub">Saisie par l’agence, après un appel par exemple</p></div>
+  <div class="card panel">
+    <label>Bien<select id="ni-b">${BIEN.map(b=>`<option value="${b.id}">${esc(b.nom)} — ${esc(Lc(b.loc).nom)}</option>`).join('')}</select></label>
+    <label>Catégorie<select id="ni-c"><option>Plomberie</option><option>Électricité</option><option>Chauffage</option><option>Menuiserie</option><option>Serrurerie</option><option>Petits travaux</option></select></label>
+    <label>Problème<input type="text" id="ni-t" value="Robinet de la cuisine qui goutte"></label>
+    <label>Détails<textarea id="ni-d">Le locataire a appelé ce matin, le robinet goutte en continu.</textarea></label>
+    <label style="flex-direction:row;align-items:center;gap:8px;font-weight:500"><input type="checkbox" id="ni-u"> Urgent</label>
+    <button class="btn primary" data-a="createInter">Créer l’intervention</button>
+  </div>`;
+V.edls=()=>{
+  const up=EDL.filter(e=>e.statut==='À faire').sort((a,b)=>a.date.localeCompare(b.date)),done=EDL.filter(e=>e.statut==='Finalisé');
+  const r=e=>{const d=new Date(e.date+'T12:00:00');return `<button class="row" data-a="edl" data-id="${e.id}"><span class="ico ${e.type==='Entrée'?'i-blue':'i-amber'}">${IC.clip}</span><div class="m"><div class="t">${e.type} · ${esc(Bn(e.bien).nom)}</div><div class="d">${d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'})} à ${e.h} · ${esc(e.qui)}</div></div><span class="pill ${e.statut==='Finalisé'?'p-done':'p-assign'}">${e.statut}</span></button>`};
+  return `<div><h1>États des lieux</h1><p class="sub">Sur tablette ou téléphone, avec photos et signatures</p></div>
+  <h2>À venir</h2><div class="card">${up.map(r).join('')}</div>
+  <h2>Faits</h2><div class="card">${done.map(r).join('')}</div>`;
+};
+V.edl=()=>{
+  const e=EDL.find(x=>x.id===state.p),b=Bn(e.bien);
+  if(!e.pieces)e.pieces=b.pieces.map((p,i)=>({nom:p,elements:(ELEMENTS[p]||['Sol','Murs']).map(n=>({nom:n,etat:e.statut==='Finalisé'?'Bon état':'',comm:''})),photos:e.statut==='Finalisé'?[photo(p+' — vue générale',195+i*8)]:[]}));
+  if(state.room>=e.pieces.length)state.room=0;
+  const pc=e.pieces[state.room],ro=e.statut==='Finalisé';
+  return `<div><h1>État des lieux d’${e.type==='Entrée'?'entrée':'sortie'}</h1><p class="sub">${esc(b.nom)} · ${esc(Lc(b.loc).nom)} · ${fmtL(e.date)}</p></div>
+  ${ro?`<button class="btn primary" data-a="pdf">Voir le PDF</button>`:`<button class="btn" data-a="allGood">Tout « Bon état » dans cette pièce</button>`}
+  <div class="ptabs">${e.pieces.map((p,k)=>`<button data-a="room" data-i="${k}" aria-pressed="${k===state.room}">${esc(p.nom)}${p.elements.every(x=>x.etat)?' ✓':''}</button>`).join('')}</div>
+  <div class="card">${pc.elements.map((el,j)=>`<div class="el"><b>${esc(el.nom)}</b><div class="seg">${ETATS.map(s=>`<button data-a="etat" data-j="${j}" data-v="${s}" aria-pressed="${el.etat===s}" ${ro?'disabled':''}>${s}</button>`).join('')}</div><input type="text" id="c-${state.room}-${j}" data-a="comm" data-j="${j}" value="${esc(el.comm)}" placeholder="Commentaire" ${ro?'readonly':''}></div>`).join('')}</div>
+  <h2>Photos · ${esc(pc.nom)}</h2>
+  <div class="card photos">${pc.photos.map(ph=>`<figure><img src="${ph}" alt=""></figure>`).join('')}${ro?'':`<label class="addphoto">＋ Prendre une photo<input type="file" accept="image/*" multiple data-a="edlPhoto" hidden></label>`}</div>
+  ${ro?'':`<h2>Signatures</h2><div class="card sig"><div><label>Pour l’agence</label><canvas id="sig-a" width="600" height="260"></canvas><button class="clear" data-a="clr" data-w="a">Effacer</button></div><div><label>Locataire</label><canvas id="sig-l" width="600" height="260"></canvas><button class="clear" data-a="clr" data-w="l">Effacer</button></div></div><button class="btn primary full" data-a="finalize">Finaliser et générer le PDF</button>`}`;
+};
+V.biens=()=>`<div><h1>Biens</h1><p class="sub">${BIEN.length} biens, ${PROP.length} propriétaires</p></div>
+  ${PROP.map(p=>`<h2>${esc(p.nom)}</h2><div class="card">${BIEN.filter(b=>b.prop===p.id).map(b=>{const o=INT.filter(i=>i.bien===b.id&&i.statut!=='Terminée').length;return `<button class="row" data-a="bien" data-id="${b.id}"><span class="ico i-blue">${IC.bldg}</span><div class="m"><div class="t">${esc(b.nom)}</div><div class="d">${esc(Lc(b.loc).nom)} · ${esc(b.type)}, ${b.surf} m²</div></div>${o?`<span class="pill p-new">${o} en cours</span>`:''}<span class="chev">${IC.chev}</span></button>`}).join('')}</div>`).join('')}`;
+V.bien=()=>{
+  const b=Bn(state.p),p=Pr(b.prop),l=Lc(b.loc);
+  return `<div><h1>${esc(b.nom)}</h1><p class="sub">${esc(b.adr)}</p></div>
+  <div class="card"><dl class="kv"><dt>Type</dt><dd>${esc(b.type)}, ${b.surf} m²</dd><dt>Propriétaire</dt><dd>${esc(p.nom)} · ${esc(p.tel)}</dd><dt>Locataire</dt><dd>${esc(l.nom)} · ${esc(l.tel)}</dd><dt>Clés</dt><dd>${(CLE.find(k=>k.bien===b.id)||{chez:'Agence (coffre)'}).chez}</dd></dl></div>
+  <h2>Interventions</h2><div class="card">${INT.filter(i=>i.bien===b.id).map(i=>iRow(i,false)).join('')||'<div class="empty">Aucune intervention</div>'}</div>
+  <h2>Échéances</h2><div class="card">${RAP.filter(r=>r.bien===b.id).map(r=>`<div class="row"><span class="ico i-amber">${IC.bell}</span><div class="m"><div class="t">${esc(r.quoi)}</div><div class="d">${fmt(r.echeance)}</div></div></div>`).join('')||'<div class="empty">Rien à venir</div>'}</div>`;
+};
+V.plus=()=>`<div><h1>Plus</h1></div>
+  <div class="more">
+    <button data-a="go" data-v="artisans"><span class="ico i-blue">${IC.hammer}</span><b>Carnet d’artisans</b><span>${ART.length} artisans, leurs délais et leurs interventions</span></button>
+    <button data-a="go" data-v="rappels"><span class="ico i-amber">${IC.bell}</span><b>Échéances</b><span>Assurances, chaudières, ramonage, révision des loyers</span></button>
+    <button data-a="go" data-v="cles"><span class="ico i-violet">${IC.key}</span><b>Clés</b><span>Qui a quel trousseau, depuis quand</span></button>
+    <button data-a="nav" data-v="biens"><span class="ico i-green">${IC.user}</span><b>Propriétaires</b><span>${PROP.length} propriétaires et leurs biens</span></button>
+  </div>`;
+V.artisans=()=>`<div><h1>Carnet d’artisans</h1></div>
+  <div class="card">${ART.map(a=>{const n=INT.filter(i=>i.art===a.id&&i.statut!=='Terminée').length;return `<div class="row"><span class="ico i-blue">${IC.hammer}</span><div class="m"><div class="t">${esc(a.nom)}</div><div class="d">${esc(a.metier)} · ${esc(a.contact)} · ${esc(a.tel)} · intervient sous ${esc(a.delai)}</div></div>${n?`<span class="pill p-assign">${n} en cours</span>`:''}</div>`}).join('')}</div>`;
+V.rappels=()=>{
+  const l=[...RAP].sort((a,b)=>a.echeance.localeCompare(b.echeance));
+  return `<div><h1>Échéances</h1><p class="sub">L’application prévient avant la date, plus besoin d’y penser</p></div>
+  <div class="card">${l.map(r=>{const d=days(r.echeance);const st=r.fait?'<span class="pill p-done">Relancé</span>':d<0?'<span class="pill p-new">Échue</span>':d<=30?'<span class="pill p-plan">Bientôt</span>':'<span class="pill p-assign">Plus tard</span>';return `<div class="row"><span class="ico i-amber">${IC.bell}</span><div class="m"><div class="t">${esc(r.quoi)}</div><div class="d">${esc(Bn(r.bien).nom)} · ${fmt(r.echeance)} · à demander au ${r.qui}</div></div>${st}${!r.fait&&r.qui!=='agence'?`<button class="btn" style="padding:6px 10px" data-a="relancer" data-id="${r.id}">Relancer</button>`:''}</div>`}).join('')}</div>`;
+};
+V.cles=()=>`<div><h1>Clés</h1><p class="sub">${CLE.length} trousseaux sortis</p></div>
+  <div class="card">${CLE.map(k=>`<div class="row"><span class="ico i-violet">${IC.key}</span><div class="m"><div class="t">${esc(Bn(k.bien).nom)}</div><div class="d">Chez ${esc(k.chez)} depuis le ${k.depuis} · ${esc(k.motif)}</div></div><button class="btn" style="padding:6px 10px" data-a="rendre" data-id="${k.id}">Rendue</button></div>`).join('')||'<div class="empty">Toutes les clés sont à l’agence</div>'}</div>`;
+
+// ===== Autres rôles =====
+V.home_artisan=()=>{
+  const a=Ar(AS.artisan),mine=INT.filter(i=>i.art===a.id);
+  return `<div class="card hello"><div class="avatar">${a.contact[0]}</div><div><b style="font-size:18px">Bonjour ${esc(a.contact)}</b><div class="tiny">${esc(a.nom)} · espace artisan</div></div></div>
+  <label class="tiny" for="who-a">Changer d’artisan (démo)</label>
+  <select id="who-a" style="border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface)">${ART.map(x=>`<option value="${x.id}" ${x.id===a.id?'selected':''}>${esc(x.nom)}</option>`).join('')}</select>
+  <h2>Mes interventions</h2><div class="card">${mine.map(i=>iRow(i)).join('')||'<div class="empty">Aucune intervention</div>'}</div>
+  <p class="tiny">L’artisan ne voit que les interventions qu’on lui confie : adresse, photos, téléphone du locataire, clés. Rien d’autre.</p>`;
+};
+V.home_proprio=()=>{
+  const p=Pr(AS.proprio),biens=BIEN.filter(b=>b.prop===p.id),ints=INT.filter(i=>biens.some(b=>b.id===i.bien));
+  const att=ints.filter(i=>i.statut==='Devis à valider');
+  return `<div class="card hello"><div class="avatar">${p.nom[0]}</div><div><b style="font-size:18px">${esc(p.nom)}</b><div class="tiny">Espace propriétaire${p.contact?' · '+esc(p.contact):''}</div></div></div>
+  ${att.length?`<h2>Votre accord est demandé</h2><div class="card">${att.map(i=>iRow(i)).join('')}</div>`:''}
+  <h2>Vos biens</h2><div class="card">${biens.map(b=>`<div class="row"><span class="ico i-blue">${IC.bldg}</span><div class="m"><div class="t">${esc(b.nom)}</div><div class="d">${esc(Lc(b.loc).nom.split(' (')[0])} · ${esc(b.type)}, ${b.surf} m²</div></div></div>`).join('')}</div>
+  <h2>Interventions sur vos biens</h2><div class="card">${ints.map(i=>iRow(i)).join('')}</div>
+  <p class="tiny">Le propriétaire suit tout seul ses interventions, avec les photos. Il n’a plus besoin d’appeler l’agence pour savoir où ça en est.</p>`;
+};
+V.home_locataire=()=>{
+  const l=Lc(AS.locataire),b=BIEN.find(x=>x.loc===l.id),mine=INT.filter(i=>i.bien===b.id);
+  return `<div class="card hello"><div class="avatar">${l.nom[0]}</div><div><b style="font-size:18px">Bonjour ${esc(l.nom.split(' ')[0])}</b><div class="tiny">${esc(b.nom)} · espace locataire</div></div></div>
+  <button class="btn primary full" data-a="go" data-v="signal">＋ Signaler un problème dans mon logement</button>
+  <h2>Mes demandes</h2><div class="card">${mine.map(i=>`<button class="row" data-a="inter" data-id="${i.id}"><span class="ico i-blue">${IC.wrench}</span><div class="m"><div class="t">${esc(i.titre)}</div><div class="d">${i.statut==='Nouvelle'?'Reçue par l’agence':i.statut==='Terminée'?'Réglé':i.art?'Prise en charge par '+esc(Ar(i.art).nom):'En cours'}${i.rdv?' · rendez-vous le '+fmt(i.rdv):''}</div></div><span class="pill ${PCL[i.statut]}">${i.statut==='Devis à valider'?'En cours':i.statut}</span></button>`).join('')||'<div class="empty">Aucune demande</div>'}</div>
+  <h2>Mes documents</h2><div class="card"><div class="row"><span class="ico i-green">${IC.clip}</span><div class="m"><div class="t">État des lieux d’entrée</div><div class="d">PDF signé</div></div></div></div>`;
+};
+V.signal=()=>`<div><h1>Signaler un problème</h1><p class="sub">Une photo et quelques mots, l’agence s’occupe du reste</p></div>
+  <div class="card panel">
+    <label>Où ?<select id="sg-c"><option>Salle de bain</option><option>Cuisine</option><option>Chambre</option><option>Séjour</option><option>Chauffage</option><option>Porte, fenêtre, volet</option></select></label>
+    <label>Qu’est-ce qui ne va pas ?<input type="text" id="sg-t" value="La chasse d’eau coule en continu"></label>
+    <label class="addphoto" style="aspect-ratio:auto;padding:18px" id="sg-pl">＋ Prendre une photo<input type="file" accept="image/*" id="sg-img" hidden></label>
+    <label style="flex-direction:row;align-items:center;gap:8px;font-weight:500"><input type="checkbox" id="sg-u"> C’est urgent (fuite, plus de chauffage, porte bloquée)</label>
+    <button class="btn primary" data-a="sendSignal">Envoyer à l’agence</button>
+  </div>`;
+
+// ---------- Documents ----------
+function sheet(title,html){$('#layer').innerHTML=`<div class="overlay" data-a="close"><div class="sheetwrap"><div class="sheetbar"><b>${esc(title)}</b><button data-a="close">Fermer</button></div><div class="paper">${html}</div></div></div>`}
+function edlPdf(e){const b=Bn(e.bien),p=Pr(b.prop),l=Lc(b.loc);
+  return `<div class="hd"><div><div class="tag">Agence du Pâquier</div><h3>État des lieux d’${e.type==='Entrée'?'entrée':'sortie'}</h3>${fmtL(e.date)}</div><div><b>Logement</b><br>${esc(b.adr)}<br>${esc(b.type)}, ${b.surf} m²</div></div>
+  <table><tr><th>Propriétaire</th><th>Locataire</th></tr><tr><td>${esc(p.nom)}<br>représenté par l’Agence du Pâquier</td><td>${esc(l.nom.split(' (')[0])}</td></tr></table>
+  ${e.pieces.map(pc=>`<b>${esc(pc.nom)}</b><table><tr><th style="width:40%">Élément</th><th style="width:20%">État</th><th>Commentaire</th></tr>${pc.elements.map(x=>`<tr><td>${esc(x.nom)}</td><td>${esc(x.etat||'—')}</td><td>${esc(x.comm)}</td></tr>`).join('')}</table>${pc.photos.length?`<div class="ph">${pc.photos.map(ph=>`<img src="${ph}" alt="">`).join('')}</div>`:''}`).join('')}
+  <div class="sigs"><div>Pour l’agence<br>${e.sig?`<img src="${e.sig.a}" alt="">`:'<em>Signé électroniquement</em>'}</div><div>Le locataire<br>${e.sig?`<img src="${e.sig.l}" alt="">`:'<em>Signé électroniquement</em>'}</div></div>`}
+function reportPdf(i){const b=Bn(i.bien),p=Pr(b.prop),a=Ar(i.art);
+  return `<div class="hd"><div><div class="tag">Agence du Pâquier</div><h3>Compte rendu d’intervention</h3>${esc(i.titre)}</div><div><b>Pour</b><br>${esc(p.nom)}<br>${esc(b.adr)}</div></div>
+  <table><tr><th>Signalé le</th><th>Artisan</th><th>Intervention</th><th>Montant</th></tr><tr><td>${esc(i.quand)}</td><td>${esc(a.nom)}</td><td>${i.rdv?fmtL(i.rdv):'—'}</td><td>${i.devis!=null?euro(i.devis):'—'}</td></tr></table>
+  <p><b>Problème :</b> ${esc(i.desc)}</p>
+  <b>Photos avant</b><div class="ph" style="margin-top:4px">${i.photos.map(ph=>`<img src="${ph}" alt="">`).join('')||'—'}</div>
+  <b>Photos après</b><div class="ph" style="margin-top:4px">${i.apres.map(ph=>`<img src="${ph}" alt="">`).join('')||'—'}</div>
+  <p class="tiny" style="color:#5B6873">Document envoyé automatiquement à la clôture de l’intervention.</p>`}
+
+function bindSig(id){const c=document.getElementById(id);if(!c)return;const x=c.getContext('2d');x.lineWidth=3.2;x.lineCap='round';x.strokeStyle='#18232C';let dn=false,last=null;
+  const pos=e=>{const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}};
+  c.addEventListener('pointerdown',e=>{dn=true;last=pos(e);c.setPointerCapture(e.pointerId);c.dataset.s='1'});
+  c.addEventListener('pointermove',e=>{if(!dn)return;const p=pos(e);x.beginPath();x.moveTo(last.x,last.y);x.lineTo(p.x,p.y);x.stroke();last=p});
+  ['pointerup','pointercancel','pointerleave'].forEach(n=>c.addEventListener(n,()=>dn=false));}
+
+function render(){
+  renderTop();renderNav();
+  const v=state.view==='home'?'home_'+state.role:state.view;
+  $('#main').innerHTML=V[v]();
+  bindSig('sig-a');bindSig('sig-l');
+}
+const I=()=>INT.find(x=>x.id===state.p);
+document.addEventListener('click',ev=>{
+  const el=ev.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,d=el.dataset;
+  if(a==='close'){if(el.classList.contains('overlay')&&ev.target!==el)return;$('#layer').innerHTML='';return}
+  if(a==='back')return back();
+  if(a==='nav'){stack.length=0;state={...state,view:d.v,p:null};render();window.scrollTo(0,0);return}
+  if(a==='go')return go(d.v,null);
+  if(a==='inter'||a==='bien'||a==='edl'){if(a==='edl')state.room=0;return go(a,d.id)}
+  if(a==='rappels'||a==='cles')return go(a,null);
+  if(a==='fil'){state.fil=d.v;return render()}
+  if(a==='newInter')return go('newInter',null);
+  if(a==='createInter'){const i={id:uid('i'),bien:$('#ni-b').value,titre:$('#ni-t').value||'Intervention',cat:$('#ni-c').value,par:'Agence (appel du locataire)',quand:'12/10 · 10:05',statut:'Nouvelle',urgent:$('#ni-u').checked,art:null,devis:null,rdv:null,desc:$('#ni-d').value,photos:[],apres:[],log:[{t:'Créée par l’agence',h:'12/10 · 10:05'}]};INT.unshift(i);stack.pop();state={...state,view:'inter',p:i.id};render();toast('Intervention créée');return}
+  if(a==='assign'){const i=I();i.art=$('#art').value;i.statut='Artisan assigné';i.log.push({t:'Confiée à '+Ar(i.art).nom+' : demande envoyée sur son téléphone',h:now()});render();toast('Demande envoyée à '+Ar(i.art).nom);return}
+  if(a==='devis'){const i=I(),m=+$('#dv').value||0;i.devis=m;
+    if(m>SEUIL){i.statut='Devis à valider';i.log.push({t:'Devis de '+euro(m)+' reçu',h:now()},{t:'Au-dessus de '+SEUIL+' € : devis envoyé à '+Pr(Bn(i.bien).prop).nom+' pour accord',h:now()});toast('Devis envoyé au propriétaire pour accord')}
+    else{i.statut='Planifiée';i.rdv='2026-10-14';i.log.push({t:'Devis de '+euro(m)+' sous le seuil du mandat : validé',h:now()},{t:'Rendez-vous fixé au 14/10, locataire prévenu',h:now()});toast('Devis validé, rendez-vous fixé')}
+    render();return}
+  if(a==='relance'){I().log.push({t:'Relance envoyée au propriétaire',h:now()});render();toast('Relance envoyée (démo)');return}
+  if(a==='asProprio'){state.role='proprio';stack.length=0;state.view='inter';render();window.scrollTo(0,0);toast('Vous voyez maintenant l’écran du propriétaire');return}
+  if(a==='accept'){const i=I();i.statut='Planifiée';i.rdv='2026-10-13';i.log.push({t:'Devis accepté par '+Pr(Bn(i.bien).prop).nom,h:now()},{t:'Rendez-vous fixé le 13/10, locataire prévenu',h:now()});render();toast('Merci, l’agence et l’artisan sont prévenus');return}
+  if(a==='refuse'){const i=I();i.statut='Artisan assigné';i.devis=null;i.log.push({t:'Devis refusé par le propriétaire : nouveau devis demandé',h:now()});render();toast('Refus transmis à l’agence');return}
+  if(a==='finish'){const i=I();if(!i.apres.length)i.apres.push(photo('Après intervention',140));i.statut='Terminée';i.log.push({t:'Travail terminé, photo après ajoutée',h:now()},{t:'Compte rendu envoyé à '+Pr(Bn(i.bien).prop).nom,h:now()});render();sheet('Compte rendu d’intervention',reportPdf(i));toast('Compte rendu envoyé au propriétaire');return}
+  if(a==='report'){return sheet('Compte rendu d’intervention',reportPdf(I()))}
+  if(a==='relancer'){const r=RAP.find(x=>x.id===d.id);r.fait=true;render();toast('Relance envoyée au '+r.qui+' (démo)');return}
+  if(a==='rendre'){CLE=CLE.filter(k=>k.id!==d.id);render();toast('Clé rendue, retour au coffre');return}
+  if(a==='sendSignal'){const l=Lc(AS.locataire),b=BIEN.find(x=>x.loc===l.id);const i={id:uid('i'),bien:b.id,titre:$('#sg-t').value||'Problème signalé',cat:'Plomberie',par:l.nom+' (locataire)',quand:'12/10 · 10:12',statut:'Nouvelle',urgent:$('#sg-u').checked,art:null,devis:null,rdv:null,desc:$('#sg-c').value+' : '+($('#sg-t').value||''),photos:window._sgImg?[window._sgImg]:[photo('Photo du locataire',200)],apres:[],log:[{t:'Demande envoyée par le locataire depuis son téléphone',h:'12/10 · 10:12'}]};window._sgImg=null;INT.unshift(i);back();toast('Demande envoyée, l’agence est prévenue');return}
+  // états des lieux
+  const e=EDL.find(x=>x.id===state.p);
+  if(a==='room'){state.room=+d.i;return render()}
+  if(a==='etat'){e.pieces[state.room].elements[+d.j].etat=d.v;return render()}
+  if(a==='allGood'){e.pieces[state.room].elements.forEach(x=>{if(!x.etat)x.etat='Bon état'});if(state.room<e.pieces.length-1)state.room++;return render()}
+  if(a==='clr'){const c=document.getElementById('sig-'+d.w);c.getContext('2d').clearRect(0,0,c.width,c.height);delete c.dataset.s;return}
+  if(a==='finalize'){const miss=e.pieces.filter(p=>p.elements.some(x=>!x.etat));if(miss.length){toast('À compléter : '+miss.map(p=>p.nom).slice(0,2).join(', '));return}
+    const ca=$('#sig-a'),cl=$('#sig-l');if(!ca.dataset.s||!cl.dataset.s){toast('Il manque une signature');return}
+    e.sig={a:ca.toDataURL(),l:cl.toDataURL()};e.statut='Finalisé';render();sheet('État des lieux',edlPdf(e));toast('État des lieux finalisé');return}
+  if(a==='pdf')return sheet('État des lieux',edlPdf(e));
+});
+document.addEventListener('change',ev=>{
+  const t=ev.target;
+  if(t.id==='role'){state.role=t.value;stack.length=0;state.view='home';state.p=null;render();window.scrollTo(0,0);return}
+  if(t.id==='who-a'){AS.artisan=t.value;render();return}
+  if(t.id==='sg-img'&&t.files[0]){const r=new FileReader();r.onload=()=>{window._sgImg=r.result;$('#sg-pl').firstChild.textContent='✓ Photo ajoutée '};r.readAsDataURL(t.files[0]);return}
+  if(t.dataset.a==='addPhoto'&&t.files[0]){const i=I(),r=new FileReader();r.onload=()=>{(i.statut==='Planifiée'||state.role==='artisan'?i.apres:i.photos).push(r.result);i.log.push({t:'Photo ajoutée',h:now()});render();toast('Photo ajoutée')};r.readAsDataURL(t.files[0]);return}
+  if(t.dataset.a==='edlPhoto'){const e=EDL.find(x=>x.id===state.p),fs=[...t.files];let n=fs.length;fs.forEach(f=>{const r=new FileReader();r.onload=()=>{e.pieces[state.room].photos.push(r.result);if(--n===0){render();toast('Photo ajoutée')}};r.readAsDataURL(f)});return}
+});
+document.addEventListener('input',ev=>{if(ev.target.dataset.a==='comm'){const e=EDL.find(x=>x.id===state.p);e.pieces[state.room].elements[+ev.target.dataset.j].comm=ev.target.value}});
+render();
+</script>
+
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js",{scope:"./"}).catch(function(){})}</script>
+</body>
+</html>
