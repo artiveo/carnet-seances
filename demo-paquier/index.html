@@ -189,7 +189,7 @@ function photo(label,hue){
   return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 // ---------- Données fictives ----------
-const TODAY='2026-10-12';
+const TODAY='2026-10-22';
 const SEUIL=300;
 const PROP=[
   {id:'p1',nom:'Mme Catherine Duval',tel:'06 21 44 87 10'},
@@ -210,7 +210,7 @@ const BIEN=[
 const LOC=[
   {id:'l1',nom:'Mathis Girard',tel:'06 11 52 74 08'},{id:'l2',nom:'Emma Petit',tel:'06 48 20 13 77'},{id:'l3',nom:'Julie Martin',tel:'07 61 39 84 22'},
   {id:'l4',nom:'Famille Laurent',tel:'06 93 15 40 66'},{id:'l5',nom:'Hugo Bernard',tel:'06 27 88 01 39'},{id:'l6',nom:'Sarah et Karim Benali',tel:'06 54 70 26 13'},
-  {id:'l7',nom:'Lucas Fontaine (arrive le 15/10)',tel:'07 82 46 19 30'},{id:'l8',nom:'Chloé Roux',tel:'06 35 61 92 48'}
+  {id:'l7',nom:'Lucas Fontaine (arrive le 25/10)',tel:'07 82 46 19 30'},{id:'l8',nom:'Chloé Roux',tel:'06 35 61 92 48'}
 ];
 const ART=[
   {id:'a1',nom:'Plomberie Lac Services',contact:'Romain',metier:'Plomberie',tel:'06 40 18 22 75',delai:'48 h'},
@@ -223,31 +223,31 @@ const ART=[
 const STEPS=['Nouvelle','Artisan assigné','Devis à valider','Planifiée','Terminée'];
 const PCL={'Nouvelle':'p-new','Artisan assigné':'p-assign','Devis à valider':'p-devis','Planifiée':'p-plan','Terminée':'p-done'};
 let INT=[
-  {id:'i1',bien:'b3',titre:'Fuite au chauffe-eau',cat:'Plomberie',par:'Julie Martin (locataire)',quand:'12/10 · 07:52',statut:'Nouvelle',urgent:true,art:null,devis:null,rdv:null,desc:'De l’eau coule sous le chauffe-eau dans le placard de la salle de bain depuis ce matin.',photos:[photo('Chauffe-eau — placard SdB',200)],apres:[],log:[{t:'Demande envoyée par la locataire depuis son téléphone',h:'12/10 · 07:52'}]},
-  {id:'i2',bien:'b1',titre:'Volet roulant bloqué dans la chambre',cat:'Menuiserie',par:'Mathis Girard (locataire)',quand:'08/10 · 19:20',statut:'Artisan assigné',urgent:false,art:'a4',devis:null,rdv:null,desc:'Le volet reste bloqué à mi-hauteur, la sangle semble cassée.',photos:[photo('Volet chambre',35)],apres:[],log:[{t:'Demande envoyée par le locataire',h:'08/10 · 19:20'},{t:'Confiée à Menuiserie Fillon',h:'09/10 · 09:05'}]},
-  {id:'i3',bien:'b4',titre:'Chaudière en panne',cat:'Chauffage',par:'Famille Laurent (locataire)',quand:'09/10 · 08:10',statut:'Devis à valider',urgent:true,art:'a3',devis:1280,rdv:null,desc:'Plus de chauffage ni d’eau chaude. Code erreur F28 affiché.',photos:[photo('Chaudière — code F28',15)],apres:[],log:[{t:'Demande envoyée par la locataire',h:'09/10 · 08:10'},{t:'Confiée à Chauffage Semnoz',h:'09/10 · 08:40'},{t:'Diagnostic : carte électronique à remplacer. Devis de 1 280 €',h:'09/10 · 17:15'},{t:'Devis envoyé à SCI du Semnoz pour accord',h:'10/10 · 09:00'}]},
-  {id:'i4',bien:'b6',titre:'Serrure de la porte d’entrée qui force',cat:'Serrurerie',par:'Karim Benali (locataire)',quand:'07/10 · 12:30',statut:'Planifiée',urgent:false,art:'a5',devis:180,rdv:'2026-10-13',desc:'La clé tourne difficilement, peur de rester bloqués dehors.',photos:[],apres:[],log:[{t:'Demande envoyée par le locataire',h:'07/10 · 12:30'},{t:'Confiée à Serrurerie du Vieil Annecy',h:'07/10 · 14:00'},{t:'Devis de 180 € sous le seuil du mandat : validé par l’agence',h:'08/10 · 10:20'},{t:'Rendez-vous fixé le 13/10 à 9 h',h:'08/10 · 10:22'}]},
-  {id:'i5',bien:'b2',titre:'Moisissures au plafond de la salle d’eau',cat:'Petits travaux',par:'Emma Petit (locataire)',quand:'29/09 · 18:05',statut:'Terminée',urgent:false,art:'a6',devis:240,rdv:'2026-10-08',desc:'Taches noires au plafond au-dessus de la douche.',photos:[photo('Avant — plafond',180)],apres:[photo('Après — plafond repeint',150)],log:[{t:'Demande envoyée par la locataire',h:'29/09 · 18:05'},{t:'Confiée à Thomas Multi-services',h:'30/09 · 09:10'},{t:'Traitement anti-humidité et peinture faits',h:'08/10 · 16:30'},{t:'Compte rendu avec photos envoyé à Mme Catherine Duval',h:'08/10 · 17:00'}]},
-  {id:'i6',bien:'b8',titre:'Prise électrique de la cuisine qui chauffe',cat:'Électricité',par:'Chloé Roux (locataire)',quand:'01/10 · 08:45',statut:'Terminée',urgent:false,art:'a2',devis:95,rdv:'2026-10-03',desc:'La prise derrière le micro-ondes est chaude et noircie.',photos:[photo('Avant — prise cuisine',20)],apres:[photo('Après — prise remplacée',140)],log:[{t:'Demande envoyée par la locataire',h:'01/10 · 08:45'},{t:'Confiée à Élec 74',h:'01/10 · 09:15'},{t:'Prise remplacée',h:'03/10 · 11:00'},{t:'Compte rendu envoyé à Indivision Lacroix',h:'03/10 · 11:30'}]}
+  {id:'i1',bien:'b3',titre:'Fuite au chauffe-eau',cat:'Plomberie',par:'Julie Martin (locataire)',quand:'22/10 · 07:52',statut:'Nouvelle',urgent:true,art:null,devis:null,rdv:null,desc:'De l’eau coule sous le chauffe-eau dans le placard de la salle de bain depuis ce matin.',photos:[photo('Chauffe-eau — placard SdB',200)],apres:[],log:[{t:'Demande envoyée par la locataire depuis son téléphone',h:'22/10 · 07:52'}]},
+  {id:'i2',bien:'b1',titre:'Volet roulant bloqué dans la chambre',cat:'Menuiserie',par:'Mathis Girard (locataire)',quand:'18/10 · 19:20',statut:'Artisan assigné',urgent:false,art:'a4',devis:null,rdv:null,desc:'Le volet reste bloqué à mi-hauteur, la sangle semble cassée.',photos:[photo('Volet chambre',35)],apres:[],log:[{t:'Demande envoyée par le locataire',h:'18/10 · 19:20'},{t:'Confiée à Menuiserie Fillon',h:'19/10 · 09:05'}]},
+  {id:'i3',bien:'b4',titre:'Chaudière en panne',cat:'Chauffage',par:'Famille Laurent (locataire)',quand:'19/10 · 08:10',statut:'Devis à valider',urgent:true,art:'a3',devis:1280,rdv:null,desc:'Plus de chauffage ni d’eau chaude. Code erreur F28 affiché.',photos:[photo('Chaudière — code F28',15)],apres:[],log:[{t:'Demande envoyée par la locataire',h:'19/10 · 08:10'},{t:'Confiée à Chauffage Semnoz',h:'19/10 · 08:40'},{t:'Diagnostic : carte électronique à remplacer. Devis de 1 280 €',h:'19/10 · 17:15'},{t:'Devis envoyé à SCI du Semnoz pour accord',h:'20/10 · 09:00'}]},
+  {id:'i4',bien:'b6',titre:'Serrure de la porte d’entrée qui force',cat:'Serrurerie',par:'Karim Benali (locataire)',quand:'17/10 · 12:30',statut:'Planifiée',urgent:false,art:'a5',devis:180,rdv:'2026-10-23',desc:'La clé tourne difficilement, peur de rester bloqués dehors.',photos:[],apres:[],log:[{t:'Demande envoyée par le locataire',h:'17/10 · 12:30'},{t:'Confiée à Serrurerie du Vieil Annecy',h:'17/10 · 14:00'},{t:'Devis de 180 € sous le seuil du mandat : validé par l’agence',h:'18/10 · 10:20'},{t:'Rendez-vous fixé le 23/10 à 9 h',h:'18/10 · 10:22'}]},
+  {id:'i5',bien:'b2',titre:'Moisissures au plafond de la salle d’eau',cat:'Petits travaux',par:'Emma Petit (locataire)',quand:'09/10 · 18:05',statut:'Terminée',urgent:false,art:'a6',devis:240,rdv:'2026-10-18',desc:'Taches noires au plafond au-dessus de la douche.',photos:[photo('Avant — plafond',180)],apres:[photo('Après — plafond repeint',150)],log:[{t:'Demande envoyée par la locataire',h:'09/10 · 18:05'},{t:'Confiée à Thomas Multi-services',h:'10/10 · 09:10'},{t:'Traitement anti-humidité et peinture faits',h:'18/10 · 16:30'},{t:'Compte rendu avec photos envoyé à Mme Catherine Duval',h:'18/10 · 17:00'}]},
+  {id:'i6',bien:'b8',titre:'Prise électrique de la cuisine qui chauffe',cat:'Électricité',par:'Chloé Roux (locataire)',quand:'11/10 · 08:45',statut:'Terminée',urgent:false,art:'a2',devis:95,rdv:'2026-10-13',desc:'La prise derrière le micro-ondes est chaude et noircie.',photos:[photo('Avant — prise cuisine',20)],apres:[photo('Après — prise remplacée',140)],log:[{t:'Demande envoyée par la locataire',h:'11/10 · 08:45'},{t:'Confiée à Élec 74',h:'11/10 · 09:15'},{t:'Prise remplacée',h:'13/10 · 11:00'},{t:'Compte rendu envoyé à Indivision Lacroix',h:'13/10 · 11:30'}]}
 ];
 let EDL=[
-  {id:'e1',bien:'b7',type:'Entrée',date:'2026-10-15',h:'10:00',qui:'Céline',statut:'À faire'},
-  {id:'e2',bien:'b5',type:'Sortie',date:'2026-10-23',h:'14:00',qui:'Céline',statut:'À faire'},
-  {id:'e3',bien:'b5',type:'Entrée',date:'2026-11-02',h:'10:00',qui:'Céline',statut:'À faire'},
-  {id:'e4',bien:'b1',type:'Entrée',date:'2025-09-01',h:'10:00',qui:'Céline',statut:'Finalisé'}
+  {id:'e1',bien:'b7',type:'Entrée',date:'2026-10-25',h:'10:00',qui:'Céline',statut:'À faire'},
+  {id:'e2',bien:'b5',type:'Sortie',date:'2026-11-02',h:'14:00',qui:'Céline',statut:'À faire'},
+  {id:'e3',bien:'b5',type:'Entrée',date:'2026-11-12',h:'10:00',qui:'Céline',statut:'À faire'},
+  {id:'e4',bien:'b1',type:'Entrée',date:'2025-09-11',h:'10:00',qui:'Céline',statut:'Finalisé'}
 ];
 let RAP=[
-  {id:'r1',bien:'b2',quoi:'Attestation d’assurance habitation',echeance:'2026-09-30',qui:'locataire',fait:false},
-  {id:'r2',bien:'b6',quoi:'Attestation d’assurance habitation',echeance:'2026-10-31',qui:'locataire',fait:false},
-  {id:'r3',bien:'b8',quoi:'Entretien annuel de la chaudière',echeance:'2026-10-25',qui:'locataire',fait:false},
-  {id:'r4',bien:'b1',quoi:'Révision du loyer (IRL)',echeance:'2026-11-01',qui:'agence',fait:false},
-  {id:'r5',bien:'b4',quoi:'Ramonage du conduit',echeance:'2026-11-15',qui:'locataire',fait:false},
-  {id:'r6',bien:'b3',quoi:'Diagnostic électrique à renouveler',echeance:'2027-01-20',qui:'propriétaire',fait:false}
+  {id:'r1',bien:'b2',quoi:'Attestation d’assurance habitation',echeance:'2026-10-10',qui:'locataire',fait:false},
+  {id:'r2',bien:'b6',quoi:'Attestation d’assurance habitation',echeance:'2026-11-10',qui:'locataire',fait:false},
+  {id:'r3',bien:'b8',quoi:'Entretien annuel de la chaudière',echeance:'2026-11-04',qui:'locataire',fait:false},
+  {id:'r4',bien:'b1',quoi:'Révision du loyer (IRL)',echeance:'2026-11-11',qui:'agence',fait:false},
+  {id:'r5',bien:'b4',quoi:'Ramonage du conduit',echeance:'2026-11-25',qui:'locataire',fait:false},
+  {id:'r6',bien:'b3',quoi:'Diagnostic électrique à renouveler',echeance:'2027-01-30',qui:'propriétaire',fait:false}
 ];
 let CLE=[
-  {id:'k1',bien:'b5',chez:'Thomas Multi-services',depuis:'09/10',motif:'Peinture avant relocation'},
-  {id:'k2',bien:'b3',chez:'Plomberie Lac Services',depuis:'12/10',motif:'Fuite chauffe-eau'},
-  {id:'k3',bien:'b7',chez:'Agence (coffre)',depuis:'01/10',motif:'Entrée du 15/10'}
+  {id:'k1',bien:'b5',chez:'Thomas Multi-services',depuis:'19/10',motif:'Peinture avant relocation'},
+  {id:'k2',bien:'b3',chez:'Plomberie Lac Services',depuis:'22/10',motif:'Fuite chauffe-eau'},
+  {id:'k3',bien:'b7',chez:'Agence (coffre)',depuis:'11/10',motif:'Entrée du 25/10'}
 ];
 const ETATS=['Neuf','Bon état','Usagé','Dégradé'];
 const ELEMENTS={'Entrée':['Porte d’entrée','Sol','Murs','Éclairage'],'Séjour':['Sol','Murs','Plafond','Fenêtres','Radiateur'],'Pièce principale':['Sol','Murs','Fenêtre','Radiateur'],'Cuisine':['Plan de travail','Évier','Plaques','Placards','Sol'],'Coin cuisine':['Plan de travail','Évier','Plaques'],'Chambre':['Sol','Murs','Fenêtre','Placard'],'Chambre 1':['Sol','Murs','Fenêtre','Placard'],'Chambre 2':['Sol','Murs','Fenêtre'],'Chambre 3':['Sol','Murs','Fenêtre'],'Salle de bain':['Baignoire ou douche','Lavabo','Robinetterie','Ventilation'],'Salle d’eau':['Douche','Lavabo','WC','Ventilation'],'WC':['Cuvette','Chasse d’eau','Sol']};
@@ -260,7 +260,7 @@ const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',m
 const fmtL=d=>new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
 const days=d=>Math.round((new Date(d+'T12:00:00')-new Date(TODAY+'T12:00:00'))/864e5);
 const euro=n=>n.toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0});
-const now=()=>'12/10 · '+['09:14','09:31','10:02','10:26','11:05'][Math.floor(Math.random()*5)];
+const now=()=>'22/10 · '+['09:14','09:31','10:02','10:26','11:05'][Math.floor(Math.random()*5)];
 function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}
 let seq=50;const uid=p=>p+(++seq);
 
@@ -306,7 +306,7 @@ V.home_agence=()=>{
     ...edlS.map(e=>({a:'edl',id:e.id,cl:'i-blue',ic:IC.clip,t:'État des lieux d’'+(e.type==='Entrée'?'entrée':'sortie')+' '+fmt(e.date)+' à '+e.h,d:Bn(e.bien).nom+' · '+e.qui})),
     ...rap.map(r=>({a:'rappels',id:r.id,cl:'i-amber',ic:IC.bell,t:r.quoi+(days(r.echeance)<0?' : échue':' : '+fmt(r.echeance)),d:Bn(r.bien).nom}))
   ];
-  return `<div><h1>Bonjour Céline</h1><p class="sub">Lundi 12 octobre · ${todo.length} choses à traiter</p></div>
+  return `<div><h1>Bonjour Céline</h1><p class="sub">Jeudi 22 octobre · ${todo.length} choses à traiter</p></div>
   <div class="kpis">
     <button class="kpi" data-a="nav" data-v="biens"><b>${BIEN.length}</b><span>biens gérés</span></button>
     <button class="kpi ${nouv.length?'alert':''}" data-a="nav" data-v="inters"><b>${INT.filter(i=>i.statut!=='Terminée').length}</b><span>interventions ouvertes</span></button>
@@ -334,7 +334,7 @@ V.inter=()=>{
   if(role==='agence'){
     if(i.statut==='Nouvelle')act=`<div class="card panel"><label>Confier à un artisan<select id="art">${ART.map(a=>`<option value="${a.id}" ${a.metier.startsWith(i.cat)?'selected':''}>${esc(a.nom)} — ${esc(a.metier)}</option>`).join('')}</select></label><button class="btn primary" data-a="assign">Envoyer la demande à l’artisan</button><p class="tiny">L’artisan reçoit l’adresse, les photos, le téléphone du locataire et l’emplacement des clés.</p></div>`;
     else if(i.statut==='Artisan assigné')act=`<div class="card panel"><label>Montant du devis de l’artisan (€)<input type="number" id="dv" value="420"></label><div class="hint">Au-delà de ${SEUIL} €, le mandat de gestion demande l’accord du propriétaire. L’application le lui envoie automatiquement.</div><button class="btn primary" data-a="devis">Enregistrer le devis</button></div>`;
-    else if(i.statut==='Devis à valider')act=`<div class="card panel"><div class="hint warn">Devis de ${euro(i.devis)} envoyé à ${esc(p.nom)} le 10/10. En attente de son accord.</div><div class="btnrow"><button class="btn" data-a="relance">Relancer le propriétaire</button><button class="btn" data-a="asProprio">Voir son écran</button></div></div>`;
+    else if(i.statut==='Devis à valider')act=`<div class="card panel"><div class="hint warn">Devis de ${euro(i.devis)} envoyé à ${esc(p.nom)} le 20/10. En attente de son accord.</div><div class="btnrow"><button class="btn" data-a="relance">Relancer le propriétaire</button><button class="btn" data-a="asProprio">Voir son écran</button></div></div>`;
     else if(i.statut==='Planifiée')act=`<div class="card panel"><div class="hint">Rendez-vous ${i.rdv?fmtL(i.rdv):'à fixer'} avec ${esc(Ar(i.art).nom)}. Le locataire a été prévenu.</div><button class="btn green" data-a="finish">Marquer terminée et envoyer le compte rendu</button></div>`;
     else act=`<div class="card panel"><div class="hint">Intervention terminée. Le compte rendu avec les photos a été envoyé à ${esc(p.nom)}.</div><button class="btn" data-a="report">Voir le compte rendu</button></div>`;
   } else if(role==='artisan'){
@@ -490,21 +490,21 @@ document.addEventListener('click',ev=>{
   if(a==='rappels'||a==='cles')return go(a,null);
   if(a==='fil'){state.fil=d.v;return render()}
   if(a==='newInter')return go('newInter',null);
-  if(a==='createInter'){const i={id:uid('i'),bien:$('#ni-b').value,titre:$('#ni-t').value||'Intervention',cat:$('#ni-c').value,par:'Agence (appel du locataire)',quand:'12/10 · 10:05',statut:'Nouvelle',urgent:$('#ni-u').checked,art:null,devis:null,rdv:null,desc:$('#ni-d').value,photos:[],apres:[],log:[{t:'Créée par l’agence',h:'12/10 · 10:05'}]};INT.unshift(i);stack.pop();state={...state,view:'inter',p:i.id};render();toast('Intervention créée');return}
+  if(a==='createInter'){const i={id:uid('i'),bien:$('#ni-b').value,titre:$('#ni-t').value||'Intervention',cat:$('#ni-c').value,par:'Agence (appel du locataire)',quand:'22/10 · 10:05',statut:'Nouvelle',urgent:$('#ni-u').checked,art:null,devis:null,rdv:null,desc:$('#ni-d').value,photos:[],apres:[],log:[{t:'Créée par l’agence',h:'22/10 · 10:05'}]};INT.unshift(i);stack.pop();state={...state,view:'inter',p:i.id};render();toast('Intervention créée');return}
   if(a==='assign'){const i=I();i.art=$('#art').value;i.statut='Artisan assigné';i.log.push({t:'Confiée à '+Ar(i.art).nom+' : demande envoyée sur son téléphone',h:now()});render();toast('Demande envoyée à '+Ar(i.art).nom);return}
   if(a==='devis'){const i=I(),m=+$('#dv').value||0;i.devis=m;
     if(m>SEUIL){i.statut='Devis à valider';i.log.push({t:'Devis de '+euro(m)+' reçu',h:now()},{t:'Au-dessus de '+SEUIL+' € : devis envoyé à '+Pr(Bn(i.bien).prop).nom+' pour accord',h:now()});toast('Devis envoyé au propriétaire pour accord')}
-    else{i.statut='Planifiée';i.rdv='2026-10-14';i.log.push({t:'Devis de '+euro(m)+' sous le seuil du mandat : validé',h:now()},{t:'Rendez-vous fixé au 14/10, locataire prévenu',h:now()});toast('Devis validé, rendez-vous fixé')}
+    else{i.statut='Planifiée';i.rdv='2026-10-24';i.log.push({t:'Devis de '+euro(m)+' sous le seuil du mandat : validé',h:now()},{t:'Rendez-vous fixé au 24/10, locataire prévenu',h:now()});toast('Devis validé, rendez-vous fixé')}
     render();return}
   if(a==='relance'){I().log.push({t:'Relance envoyée au propriétaire',h:now()});render();toast('Relance envoyée (démo)');return}
   if(a==='asProprio'){state.role='proprio';stack.length=0;state.view='inter';render();window.scrollTo(0,0);toast('Vous voyez maintenant l’écran du propriétaire');return}
-  if(a==='accept'){const i=I();i.statut='Planifiée';i.rdv='2026-10-13';i.log.push({t:'Devis accepté par '+Pr(Bn(i.bien).prop).nom,h:now()},{t:'Rendez-vous fixé le 13/10, locataire prévenu',h:now()});render();toast('Merci, l’agence et l’artisan sont prévenus');return}
+  if(a==='accept'){const i=I();i.statut='Planifiée';i.rdv='2026-10-23';i.log.push({t:'Devis accepté par '+Pr(Bn(i.bien).prop).nom,h:now()},{t:'Rendez-vous fixé le 23/10, locataire prévenu',h:now()});render();toast('Merci, l’agence et l’artisan sont prévenus');return}
   if(a==='refuse'){const i=I();i.statut='Artisan assigné';i.devis=null;i.log.push({t:'Devis refusé par le propriétaire : nouveau devis demandé',h:now()});render();toast('Refus transmis à l’agence');return}
   if(a==='finish'){const i=I();if(!i.apres.length)i.apres.push(photo('Après intervention',140));i.statut='Terminée';i.log.push({t:'Travail terminé, photo après ajoutée',h:now()},{t:'Compte rendu envoyé à '+Pr(Bn(i.bien).prop).nom,h:now()});render();sheet('Compte rendu d’intervention',reportPdf(i));toast('Compte rendu envoyé au propriétaire');return}
   if(a==='report'){return sheet('Compte rendu d’intervention',reportPdf(I()))}
   if(a==='relancer'){const r=RAP.find(x=>x.id===d.id);r.fait=true;render();toast('Relance envoyée au '+r.qui+' (démo)');return}
   if(a==='rendre'){CLE=CLE.filter(k=>k.id!==d.id);render();toast('Clé rendue, retour au coffre');return}
-  if(a==='sendSignal'){const l=Lc(AS.locataire),b=BIEN.find(x=>x.loc===l.id);const i={id:uid('i'),bien:b.id,titre:$('#sg-t').value||'Problème signalé',cat:'Plomberie',par:l.nom+' (locataire)',quand:'12/10 · 10:12',statut:'Nouvelle',urgent:$('#sg-u').checked,art:null,devis:null,rdv:null,desc:$('#sg-c').value+' : '+($('#sg-t').value||''),photos:window._sgImg?[window._sgImg]:[photo('Photo du locataire',200)],apres:[],log:[{t:'Demande envoyée par le locataire depuis son téléphone',h:'12/10 · 10:12'}]};window._sgImg=null;INT.unshift(i);back();toast('Demande envoyée, l’agence est prévenue');return}
+  if(a==='sendSignal'){const l=Lc(AS.locataire),b=BIEN.find(x=>x.loc===l.id);const i={id:uid('i'),bien:b.id,titre:$('#sg-t').value||'Problème signalé',cat:'Plomberie',par:l.nom+' (locataire)',quand:'22/10 · 10:12',statut:'Nouvelle',urgent:$('#sg-u').checked,art:null,devis:null,rdv:null,desc:$('#sg-c').value+' : '+($('#sg-t').value||''),photos:window._sgImg?[window._sgImg]:[photo('Photo du locataire',200)],apres:[],log:[{t:'Demande envoyée par le locataire depuis son téléphone',h:'22/10 · 10:12'}]};window._sgImg=null;INT.unshift(i);back();toast('Demande envoyée, l’agence est prévenue');return}
   // états des lieux
   const e=EDL.find(x=>x.id===state.p);
   if(a==='room'){state.room=+d.i;return render()}
