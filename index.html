@@ -299,7 +299,7 @@ function sessionHtml(){
   var h='<div class="bar"><div class="r1"><button type="button" class="btn sm" data-a="home">‹ Séances</button><h2>'+esc(s.name)+'</h2>'+
         '<button type="button" class="btn sm" data-a="edit" aria-pressed="'+ui.edit+'">'+(ui.edit?'Terminé':'Modifier')+'</button></div>'+
         '<div class="prog"><i style="width:'+(t[1]?Math.round(100*t[0]/t[1]):0)+'%"></i></div><div class="cnt tabnum">'+t[0]+' / '+t[1]+' séries · '+(s.home?'':'muscu ')+'≈ '+est(s)+' min</div></div>';
-  if(s.home && !ui.edit && s.blocks.every(function(b){return timedSec(b)>0;}) && buildQueue(sk).length) h+='<button type="button" class="btn pri" data-a="auto" style="margin:0 0 10px">▶ Lancer l\'enchaînement automatique</button><p class="note" style="margin:0 0 12px">Les exercices chronométrés s\'enchaînent tout seuls : bip aigu au début de l\'effort, deux bips graves pour la pause, bips dans les 3 dernières secondes, jingle à la fin. Pose ton téléphone par terre.</p>';
+  if(s.home && !ui.edit && s.blocks.every(function(b){return timedSec(b)>0;}) && buildQueue(sk).length) h+='<button type="button" class="btn pri" data-a="auto" style="margin:0 0 10px">▶ Lancer l\'enchaînement automatique</button><p class="note" style="margin:0 0 12px">Le circuit démarre tout seul (5 s pour te mettre en place) et les exercices s\'enchaînent : bip aigu au début de l\'effort, deux bips graves pour la pause, bips dans les 3 dernières secondes, jingle à la fin. Pose ton téléphone par terre.</p>';
   h+=s.blocks.map(function(b,i){return blockHtml(sk,b,i+1);}).join('');
   if(ui.edit){
     h+='<div class="acts"><button type="button" class="btn" data-a="addopen">+ Ajouter un exercice</button>'+
@@ -350,7 +350,7 @@ function buildQueue(sk){
   var bs=state.sessions[sk].blocks.filter(function(b){return timedSec(b)>0;}), q=[], maxS=0;
   bs.forEach(function(b){ maxS=Math.max(maxS,b.sets); });
   for(var t=0;t<maxS;t++) bs.forEach(function(b){ if(b.sets>t && done(sk,b)<=t) q.push({type:'work',sec:timedSec(b),id:b.id,set:t,name:b.ex[0].n,rest:b.rest}); });
-  var out=[]; q.forEach(function(it,i){ out.push(it); if(i<q.length-1 && it.rest>0) out.push({type:'rest',sec:it.rest,name:q[i+1].name}); });
+  var out=q.length?[{type:'rest',sec:5,name:q[0].name}]:[]; q.forEach(function(it,i){ out.push(it); if(i<q.length-1 && it.rest>0) out.push({type:'rest',sec:it.rest,name:q[i+1].name}); });
   return out;
 }
 function autoStart(sk){
@@ -411,7 +411,9 @@ document.addEventListener('click',function(ev){
   if(a==='tskip'){ if(AUTO&&T&&T.auto){ autoNext(); return; } T=null; drawT(); return; }
   if(a==='tstop'){ AUTO=null; T=null; drawT(); render(); return; }
   if(a==='auto'){ autoStart(ui.s); return; }
-  if(a==='start'){ ui.view='session'; ui.s=el.dataset.s; ui.open=firstOpen(ui.s); ui.edit=false; ui.adding=false; wake(); render(); window.scrollTo(0,0); return; }
+  if(a==='start'){ ui.view='session'; ui.s=el.dataset.s; ui.open=firstOpen(ui.s); ui.edit=false; ui.adding=false; wake(); render(); window.scrollTo(0,0);
+    var ss=state.sessions[ui.s]; if(ss.home && ss.blocks.every(function(b){return timedSec(b)>0;})) autoStart(ui.s);
+    return; }
   if(a==='home'){ AUTO=null; ui.view='home'; ui.edit=false; ui.adding=false; T=null; drawT(); render(); window.scrollTo(0,0); return; }
   if(a==='edit'){ ui.edit=!ui.edit; ui.adding=false; ui.confirmReset=false; render(); return; }
   if(a==='open'){ ui.open=(ui.open===id)?null:id; render(); var s=document.getElementById('blk-'+id); if(s&&ui.open===id) s.scrollIntoView({block:'start',behavior:'smooth'}); return; }
