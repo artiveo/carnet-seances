@@ -341,9 +341,12 @@ function startT(sec){
 }
 function tone(f,d0,len,vol){ try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); var o=actx.createOscillator(), g=actx.createGain(); o.frequency.value=f; o.connect(g); g.connect(actx.destination);
   var t0=actx.currentTime+d0; g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(vol||0.35,t0+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t0+len); o.start(t0); o.stop(t0+len+0.02); }catch(e){} }
-function beepGo(){ tone(1180,0,0.35); try{ navigator.vibrate&&navigator.vibrate(150); }catch(e){} }
-function beepRest(){ tone(660,0,0.16); tone(660,0.24,0.16); try{ navigator.vibrate&&navigator.vibrate([120,80,120]); }catch(e){} }
-function tick(){ tone(880,0,0.07,0.2); }
+function bell(d0,f,vol){ [[1,1,1.5],[2.4,.45,.9],[3.9,.2,.5]].forEach(function(p){ tone(f*p[0],d0,p[2],(vol||0.5)*p[1]); }); }
+function vib(a){ try{ navigator.vibrate&&navigator.vibrate(a); }catch(e){} }
+function beepGo(){ bell(0,420,0.55); vib(200); }
+function beepRest(){ bell(0,330,0.5); bell(0.28,330,0.5); vib([150,100,150]); }
+function beepFinal(){ bell(0,420,0.55); bell(0.3,420,0.55); bell(0.6,420,0.55); vib([200,100,200,100,200]); }
+function tick(){ tone(300,0,0.09,0.25); }
 var AUTO=null;
 function timedSec(b){ var m=/^(\d+)\s*s$/.exec(String(b.ex[0].reps).trim()); return (b.kind==='lift'&&b.ex.length===1&&m)?+m[1]:0; }
 function buildQueue(sk){
@@ -363,7 +366,7 @@ function autoNext(){
   var prev=AUTO.q[AUTO.i];
   if(prev&&prev.type==='work'){ var sk=AUTO.sk; state.prog[sk][prev.id]=Math.max(done(sk,{id:prev.id}),prev.set+1); save(); }
   AUTO.i++;
-  if(AUTO.i>=AUTO.q.length){ AUTO=null; beep(); T={end:Date.now()+8000,total:8,fin:true,done:true}; render(); drawT(); return; }
+  if(AUTO.i>=AUTO.q.length){ AUTO=null; beepFinal(); T={end:Date.now()+8000,total:8,fin:true,done:true}; render(); drawT(); return; }
   var it=AUTO.q[AUTO.i];
   if(it.type==='work'){ beepGo(); ui.open=it.id; } else beepRest();
   T={end:Date.now()+it.sec*1000,total:it.sec,fin:false,auto:true,lastTick:-1,it:it};
