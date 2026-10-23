@@ -1,6 +1,6 @@
 // Service worker : tout est mis en cache à la première ouverture, ensuite l'appli marche sans internet.
 // Pour publier une nouvelle version, changer le numéro ci-dessous.
-var VERSION = 'carnet-seances-5';
+var VERSION = 'carnet-seances-6';
 var ASSETS = [
   "./",
   "index.html",
