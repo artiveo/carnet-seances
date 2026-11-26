@@ -1,7 +1,7 @@
 // Service worker : l'appli marche sans internet après la première ouverture.
 // La page est toujours chargée depuis internet quand il y a du réseau (mises à jour immédiates),
 // sinon depuis le cache. Pour publier une nouvelle version, changer le numéro ci-dessous.
-var VERSION = 'carnet-seances-13';
+var VERSION = 'carnet-seances-14';
 var ASSETS = [
   "./",
   "index.html",
